@@ -1,8 +1,9 @@
 import "./style.css";
 import { createApplication } from "./createApplication";
+import { createRaycasterLine } from "./createRaycasterLine";
 import { createSphere } from "./createSphere";
-import { addRaycasterLineYPosition, createRaycasterLine, rotateRaycasterLineX, rotateRaycasterLineY, rotateRaycasterLineZ, subtractRaycasterLineYPosition } from "./createRaycasterLine";
 import { findIntersection } from "./findIntersection";
+import { addEvents } from "./addEvents";
 
 const { scene, camera, renderer } = createApplication();
 const { sphere, sphereRadius } = createSphere();
@@ -14,62 +15,16 @@ scene.add(line);
 const intersection = findIntersection(linePositions, sphere);
 
 if (intersection?.intersectionSphere) {
-  scene.add(intersection.intersectionSphere);
+	scene.add(intersection.intersectionSphere);
 }
 
-document.getElementById('rotate-x')?.addEventListener('click', () => {
-  rotateRaycasterLineX(line, Math.PI / 10);
-
-  const newIntersection = findIntersection(linePositions, sphere);
-
-  if (newIntersection?.intersectionSphere) {
-    scene.add(newIntersection.intersectionSphere);
-  }
-})
-
-document.getElementById('rotate-y')?.addEventListener('click', () => {
-  rotateRaycasterLineY(line, Math.PI / 10);
-
-  const newIntersection = findIntersection(linePositions, sphere);
-
-  if (newIntersection?.intersectionSphere) {
-    scene.add(newIntersection.intersectionSphere);
-  }
-});
-
-document.getElementById('rotate-z')?.addEventListener('click', () => {
-  rotateRaycasterLineZ(line, Math.PI / 10);
-
-  const newIntersection = findIntersection(linePositions, sphere);
-
-  if (newIntersection?.intersectionSphere) {
-    scene.add(newIntersection.intersectionSphere);
-  }
-})
-
-document.getElementById('increase-y')?.addEventListener('click', () => {
-  addRaycasterLineYPosition(line, 10);
-
-  const newIntersection = findIntersection(linePositions, sphere);
-
-  if (newIntersection?.intersectionSphere) {
-    scene.add(newIntersection.intersectionSphere);
-  }
-})
-
-document.getElementById('decrease-y')?.addEventListener('click', () => {
-  subtractRaycasterLineYPosition(line, -10);
-
-  const newIntersection = findIntersection(linePositions, sphere);
-
-  if (newIntersection?.intersectionSphere) {
-    scene.add(newIntersection.intersectionSphere);
-  }
-})
+if (intersection?.raycaster) {
+	addEvents(intersection.raycaster, sphere, line, linePositions, scene);
+}
 
 function animate() {
-  requestAnimationFrame(animate);
-  renderer.render(scene, camera);
+	requestAnimationFrame(animate);
+	renderer.render(scene, camera);
 }
 
 animate();
