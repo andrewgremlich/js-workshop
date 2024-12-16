@@ -8,7 +8,7 @@ export function createRaycasterLine(yScanHeight: number, lineLength: number) {
   const line = new THREE.Line(
     new THREE.BufferGeometry().setFromPoints(points),
     new THREE.LineBasicMaterial({
-      color: 0x0000ff
+      color: 0x00ff00
     })
   );
   const linePositions = line.geometry.attributes.position;
@@ -16,8 +16,22 @@ export function createRaycasterLine(yScanHeight: number, lineLength: number) {
   return { line, linePositions }
 }
 
-export function rotateRaycasterLine(line: THREE.Line, angle: number) {
+export function rotateRaycasterLineY(line: THREE.Line, angle: number) {
   line.rotateY(angle);
+  line.updateMatrixWorld(true);
+  line.geometry.applyMatrix4(line.matrixWorld);
+  line.rotation.set(0, 0, 0);
+}
+
+export function rotateRaycasterLineX(line: THREE.Line, angle: number) {
+  line.rotateX(angle);
+  line.updateMatrixWorld(true);
+  line.geometry.applyMatrix4(line.matrixWorld);
+  line.rotation.set(0, 0, 0);
+}
+
+export function rotateRaycasterLineZ(line: THREE.Line, angle: number) {
+  line.rotateZ(angle);
   line.updateMatrixWorld(true);
   line.geometry.applyMatrix4(line.matrixWorld);
   line.rotation.set(0, 0, 0);
@@ -30,10 +44,16 @@ export function changeRaycasterLineYPosition(line: THREE.Line, y: number) {
   line.geometry.attributes.position.needsUpdate = true;
 }
 
-export function addRaycasterLineYPosition(line: THREE.Line) {
-  changeRaycasterLineYPosition(line, line.geometry.attributes.position.array[1] + 1);
+export function addRaycasterLineYPosition(line: THREE.Line, limit: number) {
+  const yChange = line.geometry.attributes.position.array[1] + 1;
+
+  if (yChange <= limit)
+    changeRaycasterLineYPosition(line, yChange);
 }
 
-export function subtractRaycasterLineYPosition(line: THREE.Line) {
-  changeRaycasterLineYPosition(line, line.geometry.attributes.position.array[1] - 1);
+export function subtractRaycasterLineYPosition(line: THREE.Line, limit: number) {
+  const yChange = line.geometry.attributes.position.array[1] - 1;
+
+  if (yChange >= limit)
+    changeRaycasterLineYPosition(line, yChange);
 }

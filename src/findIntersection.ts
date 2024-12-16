@@ -18,7 +18,7 @@ export function findIntersection(linePositions: THREE.BufferAttribute | THREE.In
     const intersectionPoint = intersects[0].point;
 
     const intersectionGeometry = new THREE.SphereGeometry(0.1);
-    const intersectionMaterial = new THREE.MeshStandardMaterial({ color: 0x0000ff });
+    const intersectionMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
     const intersectionSphere = new THREE.Mesh(intersectionGeometry, intersectionMaterial);
 
     intersectionSphere.position.copy(intersectionPoint);

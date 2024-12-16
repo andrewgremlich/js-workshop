@@ -1,7 +1,7 @@
 import "./style.css";
 import { createApplication } from "./createApplication";
 import { createSphere } from "./createSphere";
-import { addRaycasterLineYPosition, createRaycasterLine, rotateRaycasterLine, subtractRaycasterLineYPosition } from "./createRaycasterLine";
+import { addRaycasterLineYPosition, createRaycasterLine, rotateRaycasterLineX, rotateRaycasterLineY, rotateRaycasterLineZ, subtractRaycasterLineYPosition } from "./createRaycasterLine";
 import { findIntersection } from "./findIntersection";
 
 const { scene, camera, renderer } = createApplication();
@@ -17,8 +17,18 @@ if (intersection?.intersectionSphere) {
   scene.add(intersection.intersectionSphere);
 }
 
+document.getElementById('rotate-x')?.addEventListener('click', () => {
+  rotateRaycasterLineX(line, Math.PI / 10);
+
+  const newIntersection = findIntersection(linePositions, sphere);
+
+  if (newIntersection?.intersectionSphere) {
+    scene.add(newIntersection.intersectionSphere);
+  }
+})
+
 document.getElementById('rotate-y')?.addEventListener('click', () => {
-  rotateRaycasterLine(line, Math.PI / 10);
+  rotateRaycasterLineY(line, Math.PI / 10);
 
   const newIntersection = findIntersection(linePositions, sphere);
 
@@ -27,8 +37,18 @@ document.getElementById('rotate-y')?.addEventListener('click', () => {
   }
 });
 
+document.getElementById('rotate-z')?.addEventListener('click', () => {
+  rotateRaycasterLineZ(line, Math.PI / 10);
+
+  const newIntersection = findIntersection(linePositions, sphere);
+
+  if (newIntersection?.intersectionSphere) {
+    scene.add(newIntersection.intersectionSphere);
+  }
+})
+
 document.getElementById('increase-y')?.addEventListener('click', () => {
-  addRaycasterLineYPosition(line);
+  addRaycasterLineYPosition(line, 10);
 
   const newIntersection = findIntersection(linePositions, sphere);
 
@@ -38,7 +58,7 @@ document.getElementById('increase-y')?.addEventListener('click', () => {
 })
 
 document.getElementById('decrease-y')?.addEventListener('click', () => {
-  subtractRaycasterLineYPosition(line);
+  subtractRaycasterLineYPosition(line, -10);
 
   const newIntersection = findIntersection(linePositions, sphere);
 
