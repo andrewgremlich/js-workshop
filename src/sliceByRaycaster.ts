@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-export function sliceByRaycaster(model: THREE.Mesh) {
+function sliceByLightsaber(model: THREE.Mesh) {
 	const boundingBox = new THREE.Box3().setFromObject(model);
 	const center = boundingBox.getCenter(new THREE.Vector3());
 	const pointGatherer: THREE.Vector3[] = [];
@@ -36,6 +36,8 @@ export function sliceByRaycaster(model: THREE.Mesh) {
 	const gcode = generateGCode(pointGatherer);
 	downloadGCode(gcode);
 }
+
+export { sliceByLightsaber as sliceByRaycaster };
 
 function generateGCode(points: THREE.Vector3[]): string {
 	let gcode = "G21 ; Set units to millimeters\n";
