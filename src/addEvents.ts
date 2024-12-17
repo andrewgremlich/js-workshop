@@ -11,7 +11,7 @@ import { sliceByRaycaster } from "./sliceByRaycaster";
 
 export function addEvents(
 	raycaster: THREE.Raycaster,
-	sphere: THREE.Mesh,
+	meshObject: THREE.Mesh,
 	line: THREE.Line,
 	linePositions: THREE.BufferAttribute | THREE.InterleavedBufferAttribute,
 	scene: THREE.Scene,
@@ -21,13 +21,13 @@ export function addEvents(
 			return;
 		}
 
-		sliceByRaycaster(sphere);
+		sliceByRaycaster(meshObject);
 	});
 
 	document.getElementById("rotate-x")?.addEventListener("click", () => {
 		rotateRaycasterLineX(line, Math.PI / 10);
 
-		const newIntersection = findIntersection(linePositions, sphere);
+		const newIntersection = findIntersection(linePositions, meshObject);
 
 		if (newIntersection?.intersectionSphere) {
 			scene.add(newIntersection.intersectionSphere);
@@ -37,7 +37,7 @@ export function addEvents(
 	document.getElementById("rotate-y")?.addEventListener("click", () => {
 		rotateRaycasterLineY(line, Math.PI / 10);
 
-		const newIntersection = findIntersection(linePositions, sphere);
+		const newIntersection = findIntersection(linePositions, meshObject);
 
 		if (newIntersection?.intersectionSphere) {
 			scene.add(newIntersection.intersectionSphere);
@@ -47,7 +47,7 @@ export function addEvents(
 	document.getElementById("rotate-z")?.addEventListener("click", () => {
 		rotateRaycasterLineZ(line, Math.PI / 10);
 
-		const newIntersection = findIntersection(linePositions, sphere);
+		const newIntersection = findIntersection(linePositions, meshObject);
 
 		if (newIntersection?.intersectionSphere) {
 			scene.add(newIntersection.intersectionSphere);
@@ -57,7 +57,7 @@ export function addEvents(
 	document.getElementById("increase-y")?.addEventListener("click", () => {
 		addRaycasterLineYPosition(line, 10);
 
-		const newIntersection = findIntersection(linePositions, sphere);
+		const newIntersection = findIntersection(linePositions, meshObject);
 
 		if (newIntersection?.intersectionSphere) {
 			scene.add(newIntersection.intersectionSphere);
@@ -67,7 +67,7 @@ export function addEvents(
 	document.getElementById("decrease-y")?.addEventListener("click", () => {
 		subtractRaycasterLineYPosition(line, -10);
 
-		const newIntersection = findIntersection(linePositions, sphere);
+		const newIntersection = findIntersection(linePositions, meshObject);
 
 		if (newIntersection?.intersectionSphere) {
 			scene.add(newIntersection.intersectionSphere);

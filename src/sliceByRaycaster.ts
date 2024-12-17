@@ -1,6 +1,15 @@
 import * as THREE from "three";
 
-function sliceByLightsaber(model: THREE.Mesh, layerHeight = 1, segments = 100) {
+function flipVerticalAxis(currentAxis: "y" | "z"): "y" | "z" {
+	return currentAxis === "y" ? "z" : "y";
+}
+
+function sliceByLightsaber(
+	model: THREE.Mesh,
+	verticalAxis: "y" | "z" = "y",
+	layerHeight = 1,
+	segments = 100,
+) {
 	const boundingBox = new THREE.Box3().setFromObject(model);
 	const center = boundingBox.getCenter(new THREE.Vector3());
 	const pointGatherer: THREE.Vector3[] = [];
@@ -9,8 +18,8 @@ function sliceByLightsaber(model: THREE.Mesh, layerHeight = 1, segments = 100) {
 	// 	Math.PI * 2 * boundingBox.max.y; // TODO: double check this dimension
 
 	for (
-		let heightPosition = boundingBox.min.z;
-		heightPosition < boundingBox.max.z;
+		let heightPosition = boundingBox.min[verticalAxis];
+		heightPosition < boundingBox.max[verticalAxis];
 		heightPosition += layerHeight
 	) {
 		let circumference = 0;
@@ -26,7 +35,8 @@ function sliceByLightsaber(model: THREE.Mesh, layerHeight = 1, segments = 100) {
 			const intersects = raycaster.intersectObject(model);
 			const distance = intersects[0]?.distance;
 
-			if (circumference === 0 && distance) { // TODO: see note above with max Circumference.
+			if (circumference === 0 && distance) {
+				// TODO: see note above with max Circumference.
 				circumference = Math.PI * 2 * distance;
 			}
 
@@ -39,47 +49,56 @@ function sliceByLightsaber(model: THREE.Mesh, layerHeight = 1, segments = 100) {
 		}
 	}
 
-	// NOTE: For debugging purposes
-	setInterval(() => {
-		const sphere = new THREE.Mesh(
-			new THREE.SphereGeometry(0.1),
-			new THREE.MeshBasicMaterial({ color: 0x0000ff }),
-		);
-		sphere.position.copy(pointGatherer[0]);
+	// NOTE: For debugging purposes without gcode generation.
+	// while (pointGatherer.length > 0) {
+	// 	const sphere = new THREE.Mesh(
+	// 		new THREE.SphereGeometry(0.1),
+	// 		new THREE.MeshBasicMaterial({ color: 0x0000ff }),
+	// 	);
+	// 	sphere.position.copy(pointGatherer[0]);
 
-		model.parent?.add(sphere);
-		pointGatherer.shift();
-	}, 200);
+	// 	model.parent?.add(sphere);
+	// 	pointGatherer.shift();
+	// }
 
-	// const gcode = generateGCode(pointGatherer);
+	const gcode = generateGCode(pointGatherer, verticalAxis);
+
+	console.log(gcode);
 	// downloadGCode(gcode);
 }
 
 export { sliceByLightsaber as sliceByRaycaster };
 
-// function generateGCode(points: THREE.Vector3[]): string {
-// 	let gcode = "G21 ; Set units to millimeters\n";
-// 	gcode += "G90 ; Use absolute positioning\n";
-// 	gcode += "G1 Z5 F5000 ; Lift\n";
+function generateGCode(
+	points: THREE.Vector3[],
+	verticalAxis: "y" | "z" = "y",
+): string {
+	let gcode = "G21 ; Set units to millimeters\n";
+	gcode += "G90 ; Use absolute positioning\n";
+	gcode += "G1 Z5 F5000 ; Lift\n";
 
-// 	for (const point of points) {
-// 		gcode += `G1 X${point.x.toFixed(2)} Y${point.z.toFixed(2)} Z${point.y.toFixed(2)} F1500\n`;
-// 	}
+	for (const point of points) {
+		const flipHeight = flipVerticalAxis(verticalAxis);
 
-// 	gcode += "G1 Z5 F5000 ; Lift\n";
-// 	gcode += "M30 ; End of program\n";
+		console.log(verticalAxis, flipHeight);
 
-// 	return gcode;
-// }
+		gcode += `G1 X${point.x.toFixed(2)} Y${point[flipHeight].toFixed(2)} Z${point[verticalAxis].toFixed(2)} F1500\n`;
+	}
 
-// function downloadGCode(gcode: string, filename = "output.gcode") {
-// 	const blob = new Blob([gcode], { type: "text/plain" });
-// 	const url = URL.createObjectURL(blob);
-// 	const a = document.createElement("a");
-// 	a.href = url;
-// 	a.download = filename;
-// 	document.body.appendChild(a);
-// 	a.click();
-// 	document.body.removeChild(a);
-// 	URL.revokeObjectURL(url);
-// }
+	gcode += "G1 Z5 F5000 ; Lift\n";
+	gcode += "M30 ; End of program\n";
+
+	return gcode;
+}
+
+function downloadGCode(gcode: string, filename = "output.gcode") {
+	const blob = new Blob([gcode], { type: "text/plain" });
+	const url = URL.createObjectURL(blob);
+	const a = document.createElement("a");
+	a.href = url;
+	a.download = filename;
+	document.body.appendChild(a);
+	a.click();
+	document.body.removeChild(a);
+	URL.revokeObjectURL(url);
+}
