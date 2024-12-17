@@ -1,14 +1,18 @@
 import * as THREE from "three";
 
-function sliceByLightsaber(model: THREE.Mesh, segments = 100) {
+function sliceByLightsaber(model: THREE.Mesh, layerHeight = 1, segments = 100) {
 	const boundingBox = new THREE.Box3().setFromObject(model);
 	const center = boundingBox.getCenter(new THREE.Vector3());
 	const pointGatherer: THREE.Vector3[] = [];
 
-	const maxCircumference =
-		Math.PI * 2 * Math.max(boundingBox.max.y, boundingBox.max.y);
+	const maxCircumference = // TODO: Circumference might not help because it won't always be a circle.
+		Math.PI * 2 * boundingBox.max.y; // TODO: double check this dimension
 
-	for (let z = boundingBox.min.z; z < boundingBox.max.z; z++) {
+	for (
+		let heightPosition = boundingBox.min.z;
+		heightPosition < boundingBox.max.z;
+		heightPosition += layerHeight
+	) {
 		let circumference = 0;
 		let angle = 0;
 		const angleIncrement = (Math.PI * 2) / segments;
@@ -16,13 +20,13 @@ function sliceByLightsaber(model: THREE.Mesh, segments = 100) {
 		while (angle < Math.PI * 2) {
 			const direction = new THREE.Vector3(Math.cos(angle), 0, Math.sin(angle));
 			const raycaster = new THREE.Raycaster(
-				new THREE.Vector3(center.x, z, center.z),
+				new THREE.Vector3(center.x, heightPosition, center.z),
 				direction,
 			);
 			const intersects = raycaster.intersectObject(model);
 			const distance = intersects[0]?.distance;
 
-			if (circumference === 0 && distance) {
+			if (circumference === 0 && distance) { // TODO: see note above with max Circumference.
 				circumference = Math.PI * 2 * distance;
 			}
 
