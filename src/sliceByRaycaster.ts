@@ -41,15 +41,15 @@ function sliceByLightsaber(
 	}
 
 	// NOTE: For debugging purposes without gcode generation.
-	for (const point of pointGatherer) {
-		const sphere = new THREE.Mesh(
-			new THREE.SphereGeometry(0.1),
-			new THREE.MeshBasicMaterial({ color: 0x0000ff }),
-		);
-		sphere.position.copy(point);
+	// for (const point of pointGatherer) {
+	// 	const sphere = new THREE.Mesh(
+	// 		new THREE.SphereGeometry(0.1),
+	// 		new THREE.MeshBasicMaterial({ color: 0x0000ff }),
+	// 	);
+	// 	sphere.position.copy(point);
 
-		model.parent?.add(sphere);
-	}
+	// 	model.parent?.add(sphere);
+	// }
 
 	const gcode = generateGCode(pointGatherer, verticalAxis);
 	downloadGCode(gcode);
