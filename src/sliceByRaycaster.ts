@@ -5,8 +5,8 @@ function sliceByLightsaber(model: THREE.Mesh, layerHeight = 1, segments = 100) {
 	const center = boundingBox.getCenter(new THREE.Vector3());
 	const pointGatherer: THREE.Vector3[] = [];
 
-	const maxCircumference = // TODO: Circumference might not help because it won't always be a circle.
-		Math.PI * 2 * boundingBox.max.y; // TODO: double check this dimension
+	// const maxCircumference = // TODO: Circumference might not help because it won't always be a circle.
+	// 	Math.PI * 2 * boundingBox.max.y; // TODO: double check this dimension
 
 	for (
 		let heightPosition = boundingBox.min.z;
@@ -57,29 +57,29 @@ function sliceByLightsaber(model: THREE.Mesh, layerHeight = 1, segments = 100) {
 
 export { sliceByLightsaber as sliceByRaycaster };
 
-function generateGCode(points: THREE.Vector3[]): string {
-	let gcode = "G21 ; Set units to millimeters\n";
-	gcode += "G90 ; Use absolute positioning\n";
-	gcode += "G1 Z5 F5000 ; Lift\n";
+// function generateGCode(points: THREE.Vector3[]): string {
+// 	let gcode = "G21 ; Set units to millimeters\n";
+// 	gcode += "G90 ; Use absolute positioning\n";
+// 	gcode += "G1 Z5 F5000 ; Lift\n";
 
-	for (const point of points) {
-		gcode += `G1 X${point.x.toFixed(2)} Y${point.z.toFixed(2)} Z${point.y.toFixed(2)} F1500\n`;
-	}
+// 	for (const point of points) {
+// 		gcode += `G1 X${point.x.toFixed(2)} Y${point.z.toFixed(2)} Z${point.y.toFixed(2)} F1500\n`;
+// 	}
 
-	gcode += "G1 Z5 F5000 ; Lift\n";
-	gcode += "M30 ; End of program\n";
+// 	gcode += "G1 Z5 F5000 ; Lift\n";
+// 	gcode += "M30 ; End of program\n";
 
-	return gcode;
-}
+// 	return gcode;
+// }
 
-function downloadGCode(gcode: string, filename = "output.gcode") {
-	const blob = new Blob([gcode], { type: "text/plain" });
-	const url = URL.createObjectURL(blob);
-	const a = document.createElement("a");
-	a.href = url;
-	a.download = filename;
-	document.body.appendChild(a);
-	a.click();
-	document.body.removeChild(a);
-	URL.revokeObjectURL(url);
-}
+// function downloadGCode(gcode: string, filename = "output.gcode") {
+// 	const blob = new Blob([gcode], { type: "text/plain" });
+// 	const url = URL.createObjectURL(blob);
+// 	const a = document.createElement("a");
+// 	a.href = url;
+// 	a.download = filename;
+// 	document.body.appendChild(a);
+// 	a.click();
+// 	document.body.removeChild(a);
+// 	URL.revokeObjectURL(url);
+// }
