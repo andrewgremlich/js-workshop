@@ -32,8 +32,9 @@ function sliceByLightsaber(
 				direction,
 			);
 			const intersects = raycaster.intersectObject(model);
-
+			
 			if (intersects.length > 0) {
+				// TODO: compare the intersection point with the one right below it to compare hard angles.
 				const intersection = intersects[0].point;
 				pointGatherer.push(intersection);
 			}
