@@ -4,6 +4,13 @@
 	box-sizing: border-box;
 }
 
+h1 {
+	text-align: center;
+	margin: 20px 0;
+	font-family: 'Roboto', sans-serif;
+	color: white;
+}
+
 #ui {
 	position: fixed;
 	top: 0;

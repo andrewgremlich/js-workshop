@@ -72,5 +72,5 @@ export function addEvents(
 		if (newIntersection?.intersectionSphere) {
 			scene.add(newIntersection.intersectionSphere);
 		}
-	});
+	});	
 }
