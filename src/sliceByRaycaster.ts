@@ -9,57 +9,47 @@ function sliceByLightsaber(
 	verticalAxis: "y" | "z" = "y",
 	layerHeight = 1,
 	segments = 100,
+	incrementHeight = true,
 ) {
 	const boundingBox = new THREE.Box3().setFromObject(model);
 	const center = boundingBox.getCenter(new THREE.Vector3());
 	const pointGatherer: THREE.Vector3[] = [];
-
-	// const maxCircumference = // TODO: Circumference might not help because it won't always be a circle.
-	// 	Math.PI * 2 * boundingBox.max.y; // TODO: double check this dimension
 
 	for (
 		let heightPosition = boundingBox.min[verticalAxis];
 		heightPosition < boundingBox.max[verticalAxis];
 		heightPosition += layerHeight
 	) {
-		let circumference = 0;
-		let angle = 0;
 		const angleIncrement = (Math.PI * 2) / segments;
 
-		while (angle < Math.PI * 2) {
+		for (let angle = 0; angle < Math.PI * 2; angle += angleIncrement) {
 			const direction = new THREE.Vector3(Math.cos(angle), 0, Math.sin(angle));
+			const adjustedHeight = incrementHeight
+				? heightPosition + (angle / (Math.PI * 2)) * layerHeight
+				: heightPosition;
 			const raycaster = new THREE.Raycaster(
-				new THREE.Vector3(center.x, heightPosition, center.z),
+				new THREE.Vector3(center.x, adjustedHeight, center.z),
 				direction,
 			);
 			const intersects = raycaster.intersectObject(model);
-			const distance = intersects[0]?.distance;
-
-			if (circumference === 0 && distance) {
-				// TODO: see note above with max Circumference.
-				circumference = Math.PI * 2 * distance;
-			}
 
 			if (intersects.length > 0) {
 				const intersection = intersects[0].point;
 				pointGatherer.push(intersection);
 			}
-
-			angle += angleIncrement;
 		}
 	}
 
 	// NOTE: For debugging purposes without gcode generation.
-	// while (pointGatherer.length > 0) {
-	// 	const sphere = new THREE.Mesh(
-	// 		new THREE.SphereGeometry(0.1),
-	// 		new THREE.MeshBasicMaterial({ color: 0x0000ff }),
-	// 	);
-	// 	sphere.position.copy(pointGatherer[0]);
+	for (const point of pointGatherer) {
+		const sphere = new THREE.Mesh(
+			new THREE.SphereGeometry(0.1),
+			new THREE.MeshBasicMaterial({ color: 0x0000ff }),
+		);
+		sphere.position.copy(point);
 
-	// 	model.parent?.add(sphere);
-	// 	pointGatherer.shift();
-	// }
+		model.parent?.add(sphere);
+	}
 
 	const gcode = generateGCode(pointGatherer, verticalAxis);
 	downloadGCode(gcode);
