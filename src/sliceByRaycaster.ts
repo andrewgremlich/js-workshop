@@ -62,9 +62,7 @@ function sliceByLightsaber(
 	// }
 
 	const gcode = generateGCode(pointGatherer, verticalAxis);
-
-	console.log(gcode);
-	// downloadGCode(gcode);
+	downloadGCode(gcode);
 }
 
 export { sliceByLightsaber as sliceByRaycaster };
@@ -79,9 +77,6 @@ function generateGCode(
 
 	for (const point of points) {
 		const flipHeight = flipVerticalAxis(verticalAxis);
-
-		console.log(verticalAxis, flipHeight);
-
 		gcode += `G1 X${point.x.toFixed(2)} Y${point[flipHeight].toFixed(2)} Z${point[verticalAxis].toFixed(2)} F1500\n`;
 	}
 
