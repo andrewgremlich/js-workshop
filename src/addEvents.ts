@@ -21,7 +21,14 @@ export function addEvents(
 			return;
 		}
 
-		sliceByRaycaster(meshObject);
+		sliceByRaycaster(
+			meshObject,
+			"y",
+			0.5,
+			100,
+			true,
+			import.meta.env.MODE === "development",
+		);
 	});
 
 	document.getElementById("rotate-x")?.addEventListener("click", () => {
@@ -72,5 +79,5 @@ export function addEvents(
 		if (newIntersection?.intersectionSphere) {
 			scene.add(newIntersection.intersectionSphere);
 		}
-	});	
+	});
 }
