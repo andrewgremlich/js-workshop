@@ -1,40 +1,54 @@
 import * as THREE from "three";
 
-function sliceByLightsaber(model: THREE.Mesh) {
+function sliceByLightsaber(model: THREE.Mesh, segments = 100) {
 	const boundingBox = new THREE.Box3().setFromObject(model);
 	const center = boundingBox.getCenter(new THREE.Vector3());
 	const pointGatherer: THREE.Vector3[] = [];
 
+	const maxCircumference =
+		Math.PI * 2 * Math.max(boundingBox.max.y, boundingBox.max.y);
+
 	for (let z = boundingBox.min.z; z < boundingBox.max.z; z++) {
-		for (let angle = 0; angle < Math.PI * 2; angle += 0.1) {
+		let circumference = 0;
+		let angle = 0;
+		const angleIncrement = (Math.PI * 2) / segments;
+
+		while (angle < Math.PI * 2) {
 			const direction = new THREE.Vector3(Math.cos(angle), 0, Math.sin(angle));
 			const raycaster = new THREE.Raycaster(
 				new THREE.Vector3(center.x, z, center.z),
 				direction,
 			);
 			const intersects = raycaster.intersectObject(model);
+			const distance = intersects[0]?.distance;
+
+			if (circumference === 0 && distance) {
+				circumference = Math.PI * 2 * distance;
+			}
 
 			if (intersects.length > 0) {
 				const intersection = intersects[0].point;
 				pointGatherer.push(intersection);
 			}
+
+			angle += angleIncrement;
 		}
 	}
 
 	// NOTE: For debugging purposes
-	// setInterval(() => {
-	// 	const sphere = new THREE.Mesh(
-	// 		new THREE.SphereGeometry(0.1),
-	// 		new THREE.MeshBasicMaterial({ color: 0x0000ff }),
-	// 	);
-	// 	sphere.position.copy(pointGatherer[0]);
+	setInterval(() => {
+		const sphere = new THREE.Mesh(
+			new THREE.SphereGeometry(0.1),
+			new THREE.MeshBasicMaterial({ color: 0x0000ff }),
+		);
+		sphere.position.copy(pointGatherer[0]);
 
-	// 	model.parent?.add(sphere);
-	// 	pointGatherer.shift();
-	// }, 200);
+		model.parent?.add(sphere);
+		pointGatherer.shift();
+	}, 200);
 
-	const gcode = generateGCode(pointGatherer);
-	downloadGCode(gcode);
+	// const gcode = generateGCode(pointGatherer);
+	// downloadGCode(gcode);
 }
 
 export { sliceByLightsaber as sliceByRaycaster };
