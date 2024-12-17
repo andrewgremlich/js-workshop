@@ -24,5 +24,14 @@ export function createApplication() {
 	camera.position.set(0, 5, 25);
 	camera.lookAt(0, 0, 0);
 
+	window.addEventListener("resize", () => {
+		const width = window.innerWidth;
+		const height = window.innerHeight;
+
+		renderer.setSize(width, height);
+		camera.aspect = width / height;
+		camera.updateProjectionMatrix();
+	});
+
 	return { scene, camera, renderer };
 }
