@@ -24,7 +24,7 @@ export function addEvents(
 		sliceByRaycaster(
 			meshObject,
 			"y",
-			0.5,
+			1,
 			100,
 			true,
 			import.meta.env.MODE === "development",

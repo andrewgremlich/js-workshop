@@ -1,27 +1,38 @@
 import "./style.css";
 import { createApplication } from "./createApplication";
 import { createRaycasterLine } from "./createRaycasterLine";
-// import { createSphere } from "./createSphere";
+import { createSphere } from "./createSphere";
 import { findIntersection } from "./findIntersection";
 import { addEvents } from "./addEvents";
 import { createCylinder } from "./createCylinder";
+import { createCylSphere } from "./createCylSphere";
 
 const { scene, camera, renderer } = createApplication();
-// const { sphere, sphereRadius } = createSphere();
-const { cylinder, cylinderRadiusTop } = createCylinder();
-const { line, linePositions } = createRaycasterLine(-5, cylinderRadiusTop);
+const { sphere } = createSphere();
+const { cylinder } = createCylinder();
+const { sphereCylinderCsg, halfWidth } = createCylSphere(sphere, cylinder);
 
-scene.add(cylinder);
+const { line, linePositions } = createRaycasterLine(-5, halfWidth);
+
+// scene.add(sphere);
+// scene.add(cylinder);
 scene.add(line);
+scene.add(sphereCylinderCsg);
 
-const intersection = findIntersection(linePositions, cylinder);
+const intersection = findIntersection(linePositions, sphereCylinderCsg);
 
 if (intersection?.intersectionSphere) {
 	scene.add(intersection.intersectionSphere);
 }
 
 if (intersection?.raycaster) {
-	addEvents(intersection.raycaster, cylinder, line, linePositions, scene);
+	addEvents(
+		intersection.raycaster,
+		sphereCylinderCsg,
+		line,
+		linePositions,
+		scene,
+	);
 }
 
 function animate() {

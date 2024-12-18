@@ -72,6 +72,31 @@ function sliceByLightsaber(
 				// TODO: compare the intersection point with the one right below it to compare hard angles.
 				const intersection = intersects[0].point;
 				pointLevel.push(intersection);
+
+				const lastPointAccess = pointLevel.length - 1;
+				const lastLevelAccess = pointGatherer.length - 1;
+
+				const pointOneLevelDown =
+					pointGatherer[lastLevelAccess]?.[lastPointAccess];
+				const lastInsertedPoint = pointLevel[lastPointAccess];
+
+				const oneLevelDownDistanceFromZero = pointOneLevelDown?.distanceTo(
+					new THREE.Vector3(pointOneLevelDown.x, pointOneLevelDown.y, 0),
+				);
+				const lastInsertedDistanceFromZero = lastInsertedPoint.distanceTo(
+					new THREE.Vector3(lastInsertedPoint.x, lastInsertedPoint.y, 0),
+				);
+
+				if (
+					Math.abs(
+						oneLevelDownDistanceFromZero - lastInsertedDistanceFromZero,
+					) > 1
+				) {
+					console.log({
+						oneLevelDownDistanceFromZero,
+						lastInsertedDistanceFromZero,
+					});
+				}
 			}
 		}
 
