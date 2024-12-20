@@ -18,7 +18,12 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/src/*": ["src/*"],
+      "@/lib/*": ["lib/*"]
+    }
   },
-  "include": ["src"]
+  "include": ["src", "lib/sliceByRaycaster.ts"]
 }

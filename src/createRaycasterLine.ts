@@ -1,9 +1,13 @@
 import * as THREE from "three";
 
-export function createRaycasterLine(yScanHeight: number, lineLength: number) {
+export function createRaycasterLine(
+	yScanHeight: number,
+	lineLength: number,
+	center = new THREE.Vector3(0, 0, 0),
+) {
 	const points = [
-		new THREE.Vector3(0, yScanHeight, 0),
-		new THREE.Vector3(lineLength, yScanHeight, 0),
+		new THREE.Vector3(center.x, yScanHeight, center.z),
+		new THREE.Vector3(lineLength, yScanHeight, center.z),
 	];
 	const line = new THREE.Line(
 		new THREE.BufferGeometry().setFromPoints(points),

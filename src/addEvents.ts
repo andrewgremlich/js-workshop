@@ -1,4 +1,11 @@
 import type * as THREE from "three";
+
+import {
+	sliceByRaycaster,
+	generateGCode,
+	downloadGCode,
+} from "@/lib/sliceByRaycaster";
+
 import {
 	addRaycasterLineYPosition,
 	rotateRaycasterLineX,
@@ -7,7 +14,6 @@ import {
 	subtractRaycasterLineYPosition,
 } from "./createRaycasterLine";
 import { findIntersection } from "./findIntersection";
-import { sliceByRaycaster } from "./sliceByRaycaster";
 
 export function addEvents(
 	raycaster: THREE.Raycaster,
@@ -21,14 +27,16 @@ export function addEvents(
 			return;
 		}
 
-		sliceByRaycaster(
-			meshObject,
-			"y",
-			1,
-			100,
-			true,
-			import.meta.env.MODE === "development",
-		);
+		const verticalAxis = "y";
+		const points = sliceByRaycaster(meshObject, {
+			verticalAxis,
+			layerHeight: 1,
+			segments: 100,
+			incrementHeight: true,
+			debug: import.meta.env.MODE === "development",
+		});
+		const gcode = generateGCode(points, verticalAxis);
+		downloadGCode(gcode);
 	});
 
 	document.getElementById("rotate-x")?.addEventListener("click", () => {

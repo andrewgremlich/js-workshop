@@ -10,9 +10,12 @@ import { createCylSphere } from "./createCylSphere";
 const { scene, camera, renderer } = createApplication();
 const { sphere } = createSphere();
 const { cylinder } = createCylinder();
-const { sphereCylinderCsg, halfWidth } = createCylSphere(sphere, cylinder);
+const { sphereCylinderCsg, halfWidth, center } = createCylSphere(
+	sphere,
+	cylinder,
+);
 
-const { line, linePositions } = createRaycasterLine(-5, halfWidth);
+const { line, linePositions } = createRaycasterLine(-5, halfWidth, center);
 
 // scene.add(sphere);
 // scene.add(cylinder);
