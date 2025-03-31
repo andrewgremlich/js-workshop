@@ -21,9 +21,9 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/src/*": ["src/*"],
+      "@/src/*": ["pages/*"],
       "@/lib/*": ["lib/*"]
     }
   },
-  "include": ["src", "lib/sliceByRaycaster.ts"]
+  "include": ["pages", "lib/sliceByRaycaster.ts"]
 }

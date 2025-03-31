@@ -1,21 +1,18 @@
 import { resolve } from "node:path";
 import { defineConfig } from "vite";
-import { VitePWA } from "vite-plugin-pwa";
 import topLevelAwait from "vite-plugin-top-level-await";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig(() => ({
-	build: {
-		rollupOptions: {
-			input: {
-				main: resolve(__dirname, "index.html"),
-			},
-			output: {
-				manualChunks: {
-					three: ["three"],
-				},
-			},
-		},
-	},
-	plugins: [tsconfigPaths(), topLevelAwait()],
+  build: {
+    outDir: "public", // Specify the new output directory name
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, "index.html"),
+        raycaster: resolve(__dirname, "pages/raycaster.html"),
+        "offscreen-canvas": resolve(__dirname, "pages/offscreen-canvas.html"),
+      },
+    },
+  },
+  plugins: [tsconfigPaths(), topLevelAwait()],
 }));
