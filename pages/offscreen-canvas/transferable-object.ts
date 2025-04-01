@@ -1,3 +1,4 @@
+// https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Transferable_objects
 import OffscreenWorker from "./offscreen-worker?worker";
 
 const htmlCanvas = document.querySelector("canvas");
@@ -22,7 +23,7 @@ if (!offscreen) {
 }
 
 const worker = new OffscreenWorker();
-worker.postMessage({ canvas: offscreen }, [offscreen]);
+worker.postMessage({ canvas: offscreen }, [offscreen]); //transfer rather than clone
 
 setTimeout(() => {
 	htmlCanvas.toBlob((blob) => {
