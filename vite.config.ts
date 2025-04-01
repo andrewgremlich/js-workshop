@@ -5,7 +5,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig(() => ({
   build: {
-    outDir: "public", // Specify the new output directory name
+    outDir: "dist", // Specify the new output directory name
     rollupOptions: {
       input: {
         main: resolve(__dirname, "index.html"),
