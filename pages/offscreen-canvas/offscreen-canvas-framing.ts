@@ -1,3 +1,5 @@
+console.log("offscreen-canvas-framing");
+
 const canvas = document.querySelector("canvas");
 
 if (!canvas) {
@@ -5,8 +7,6 @@ if (!canvas) {
 }
 
 const ctx = canvas.getContext("bitmaprenderer");
-
-// What contexts are available?
 
 const offscreen = new OffscreenCanvas(256, 256);
 const offscreenCtx = offscreen.getContext("2d");
@@ -19,8 +19,8 @@ if (ctx && offscreenCtx) {
 	function drawFrame() {
 		console.log("Drawing frame");
 
-		const progress = Date.now() % 1000;
-		const angle = progress * 2 * Math.PI;
+		const progress = Date.now();
+		const angle = (progress / 1000) * (2 * Math.PI) / 60; // Divide into 60 segments
 
 		if (offscreenCtx) {
 			offscreenCtx.clearRect(0, 0, offscreen.width, offscreen.height);
@@ -40,6 +40,7 @@ if (ctx && offscreenCtx) {
 			offscreenCtx.fillStyle = "red";
 			offscreenCtx.fill();
 		}
+
 
 		// Transfer the offscreen canvas to a bitmap and draw it on the regular canvas
 		const offscreenBitmap = offscreen.transferToImageBitmap();
