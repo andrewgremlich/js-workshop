@@ -11,6 +11,7 @@ export default defineConfig(() => ({
         main: resolve(__dirname, "index.html"),
         raycaster: resolve(__dirname, "pages/raycaster.html"),
         "offscreen-canvas": resolve(__dirname, "pages/offscreen-canvas.html"),
+        "css-graphics": resolve(__dirname, "pages/css-graphics.html"),
       },
     },
   },
