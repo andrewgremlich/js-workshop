@@ -12,6 +12,7 @@ export default defineConfig(() => ({
         raycaster: resolve(__dirname, "pages/raycaster.html"),
         "offscreen-canvas": resolve(__dirname, "pages/offscreen-canvas.html"),
         "css-graphics": resolve(__dirname, "pages/css-graphics.html"),
+        "raycaster-calc": resolve(__dirname, "pages/raycaster-calc.html"),
       },
     },
   },
