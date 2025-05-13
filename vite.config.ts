@@ -13,6 +13,7 @@ export default defineConfig(() => ({
         "offscreen-canvas": resolve(__dirname, "pages/offscreen-canvas.html"),
         "css-graphics": resolve(__dirname, "pages/css-graphics.html"),
         "raycaster-calc": resolve(__dirname, "pages/raycaster-calc.html"),
+        "stereo": resolve(__dirname, "pages/stereo.html"),
       },
     },
   },
