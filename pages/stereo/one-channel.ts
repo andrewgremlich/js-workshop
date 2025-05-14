@@ -3,7 +3,7 @@ import { Howl } from "howler";
 console.log("stereo page");
 
 const sound = new Howl({
-	src: ["/running_out.mp3"],
+	src: ["/song.mp4"],
 	loop: true,
 	onplay: () => {
 		console.log("sound playing");
@@ -25,8 +25,13 @@ const startPanning = async () => {
 		const progress = currentTime / duration;
 		const durationPanning = 30;
 		const revolutionPanning = (progress * 100) % durationPanning;
+		const stereoValue = Math.sin(
+			(revolutionPanning / durationPanning) * Math.PI * 2,
+		);
 
-		sound.stereo(Math.sin((revolutionPanning / durationPanning) * Math.PI * 2));
+		const clampedStereoValue = Math.max(-0.75, Math.min(0.75, stereoValue));
+
+		sound.stereo(clampedStereoValue);
 
 		if (sound.playing()) {
 			panAnimationId = requestAnimationFrame(animate);
