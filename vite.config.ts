@@ -15,6 +15,7 @@ export default defineConfig(() => ({
         "raycaster-calc": resolve(__dirname, "pages/raycaster-calc.html"),
         "stereo": resolve(__dirname, "pages/stereo.html"),
         "joycon": resolve(__dirname, "pages/joycon.html"),
+        "diy-jpeg": resolve(__dirname, "pages/diy-jpeg.html"),
       },
     },
   },
