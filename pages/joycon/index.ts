@@ -4,7 +4,7 @@ console.log(JoyCon);
 
 // For the initial pairing of the Joy-Cons. They need to be paired one by one.
 // Once paired, Joy-Cons will be reconnected to on future page loads.
-document.querySelector('.connect').addEventListener('click', async () => {
+document.querySelector('.connect')?.addEventListener('click', async () => {
   // `JoyCon.connectJoyCon()` handles the initial HID pairing.
   // It keeps track of connected Joy-Cons in the `JoyCon.connectedJoyCons` Map.
   await JoyCon.connectJoyCon();

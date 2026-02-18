@@ -3,19 +3,20 @@ import { defineConfig } from "vite";
 import topLevelAwait from "vite-plugin-top-level-await";
 import tsconfigPaths from "vite-tsconfig-paths";
 
+const root = import.meta.dirname;
+
 export default defineConfig(() => ({
   build: {
-    outDir: "dist", // Specify the new output directory name
+    outDir: "dist",
     rollupOptions: {
       input: {
-        main: resolve(__dirname, "index.html"),
-        raycaster: resolve(__dirname, "pages/raycaster.html"),
-        "offscreen-canvas": resolve(__dirname, "pages/offscreen-canvas.html"),
-        "css-graphics": resolve(__dirname, "pages/css-graphics.html"),
-        "raycaster-calc": resolve(__dirname, "pages/raycaster-calc.html"),
-        "stereo": resolve(__dirname, "pages/stereo.html"),
-        "joycon": resolve(__dirname, "pages/joycon.html"),
-        "diy-jpeg": resolve(__dirname, "pages/diy-jpeg.html"),
+        main: resolve(root, "index.html"),
+        raycaster: resolve(root, "pages/raycaster.html"),
+        "offscreen-canvas": resolve(root, "pages/offscreen-canvas.html"),
+        "css-graphics": resolve(root, "pages/css-graphics.html"),
+        "raycaster-calc": resolve(root, "pages/raycaster-calc.html"),
+        "stereo": resolve(root, "pages/stereo.html"),
+        "joycon": resolve(root, "pages/joycon.html"),
       },
     },
   },
